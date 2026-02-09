@@ -114,7 +114,7 @@ SphereCollider:
   m_ProvidesContacts: 1
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
+  m_Radius: 0.2
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!135 &7629366583081682200
 SphereCollider:
@@ -135,7 +135,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
+  m_Radius: 5
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &4893233655874024439
 MonoBehaviour:
@@ -146,10 +146,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 4621434630516147203}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7256b59a1ca90db4a9bc971fc1a08a43, type: 3}
+  m_Script: {fileID: 11500000, guid: 9804e0db7b5a8214fb15ae3d612a7bc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RockScript
   lootToSpawn: {fileID: 0}
+  highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!54 &5473615401050228055
 Rigidbody:
   m_ObjectHideFlags: 0

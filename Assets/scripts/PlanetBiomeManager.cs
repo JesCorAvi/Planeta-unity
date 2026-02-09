@@ -48,48 +48,59 @@ public class PlanetBiomeManager : MonoBehaviour
         ren.material.mainTexture = texture;
     }
 
- void GenerateRocks()
+void GenerateRocks()
     {
-        // NOTA: Como ahora las rocas son Kinematic, no necesitan GravityBody ni Attractor
-        // pero lo dejamos por si acaso decides reactivar la física luego.
         GravityAttractor myGravity = GetComponent<GravityAttractor>();
+
+        // PREVENCIÓN DE ERRORES:
+        // Si no hay loot asignado, asignamos un cubo temporal para que no pete el juego
+        if (lootBiome1 == null) { Debug.LogError("¡Falta asignar Loot Bioma 1!"); return; }
+        if (lootBiome2 == null) { Debug.LogError("¡Falta asignar Loot Bioma 2!"); return; }
 
         for (int i = 0; i < numberOfRocks; i++)
         {
+            // 1. Dirección aleatoria en el mundo
             Vector3 randomDir = Random.onUnitSphere;
-            
-            // CAMBIO: Usamos exactamente el radio del planeta.
-            // Si tu radio es 50 (porque escala es 100), pon aquí 50 exactos.
-            // Si la roca se queda medio enterrada, súmale un poquito (ej: planetRadius + 1f)
-            Vector3 spawnPos = transform.position + (randomDir * planetRadius); 
+            Vector3 spawnPos = transform.position + (randomDir * planetRadius);
 
+            // 2. Instanciar
             GameObject newRock = Instantiate(rockPrefab, spawnPos, Quaternion.identity);
+            newRock.transform.up = randomDir;
+
+            // Configurar Scripts
+            RockInteraction rockScript = newRock.GetComponent<RockInteraction>();
+            if (rockScript == null) rockScript = newRock.AddComponent<RockInteraction>();
             
-            // Alinear perfectamente con el centro del planeta
-            newRock.transform.up = randomDir; 
-
-            // Configurar Script
-            RockScript rockScript = newRock.GetComponent<RockScript>();
-            // Si se había perdido el script por el error "Missing", esto evitará que el juego pete
-            if (rockScript == null) rockScript = newRock.AddComponent<RockScript>();
-
-            // Asignar Color y Gravedad (aunque sea Kinematic)
             newRock.GetComponent<Renderer>().material.color = rockColor;
+            
             GravityBody rockGravity = newRock.GetComponent<GravityBody>();
             if (rockGravity) rockGravity.attractor = myGravity;
 
-            // --- LÓGICA DE BIOMA ---
-            float u = 0.5f + (Mathf.Atan2(randomDir.z, randomDir.x) / (2f * Mathf.PI));
-            float v = 0.5f - (Mathf.Asin(randomDir.y) / Mathf.PI);
+            // --- CORRECCIÓN CLAVE AQUÍ ---
+            // Convertimos la dirección Mundial a Local para que la rotación del planeta no afecte
+            Vector3 localDir = transform.InverseTransformDirection(randomDir);
+
+            // Usamos localDir para calcular las coordenadas UV
+            float u = 0.5f + (Mathf.Atan2(localDir.z, localDir.x) / (2f * Mathf.PI));
+            float v = 0.5f - (Mathf.Asin(localDir.y) / Mathf.PI);
+
+            // Muestreamos el ruido
             float noiseValue = Mathf.PerlinNoise(u * noiseScale, v * noiseScale);
 
+            // 3. Decisión de Loot (Umbral estricto)
+            // Añadimos un pequeño margen de seguridad en el borde (0.45 - 0.55) si quisieras
+            // pero con la corrección local debería ser exacto.
             if (noiseValue < 0.5f)
             {
                 rockScript.lootToSpawn = lootBiome1;
+                // Debug visual (Opcional): Descomenta para ver si coincide
+                // newRock.GetComponent<Renderer>().material.color = Color.green; 
             }
             else
             {
                 rockScript.lootToSpawn = lootBiome2;
+                // Debug visual (Opcional):
+                // newRock.GetComponent<Renderer>().material.color = Color.red; 
             }
         }
     }

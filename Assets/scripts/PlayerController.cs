@@ -3,18 +3,21 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    [Header("Ajustes")]
+    [Header("Movimiento")]
     public float moveSpeed = 8f;
     public float mouseSensitivity = 0.2f;
-    public float interactionRange = 10f; // Aumentado a 10 metros
-
-    [Header("Referencias")]
+    
+    [Header("Interacción")]
+    public float interactionRange = 5f; 
     public Transform cameraTransform;
 
+    // Variables internas
     private Vector2 moveInput;
     private Vector2 lookInput;
     private Rigidbody rb;
     private float cameraPitch = 0f;
+    
+    private RockInteraction currentRock; 
 
     void Start()
     {
@@ -27,23 +30,61 @@ public class PlayerController : MonoBehaviour
         if (cameraTransform == null) cameraTransform = Camera.main.transform;
     }
 
-    void OnMove(InputValue value) => moveInput = value.Get<Vector2>();
-    void OnLook(InputValue value) => lookInput = value.Get<Vector2>();
-    
-    void OnFire(InputValue value)
+    void Update()
     {
-        // Si pulsamos el botón, intentamos interactuar
-        if (value.isPressed) 
+        HandleInteractionRaycast();
+    }
+
+    void HandleInteractionRaycast()
+    {
+        Ray ray = new Ray(cameraTransform.position, cameraTransform.forward);
+        RaycastHit hit;
+
+        // Dibujar línea roja en el editor para ver a dónde apuntas
+        Debug.DrawRay(cameraTransform.position, cameraTransform.forward * interactionRange, Color.red);
+
+        if (Physics.Raycast(ray, out hit, interactionRange))
         {
-            Debug.Log("BOTÓN DISPARO PULSADO"); // Chivato 1
-            TryInteract();
+            RockInteraction rock = hit.collider.GetComponent<RockInteraction>();
+
+            if (rock != null)
+            {
+                if (currentRock != rock)
+                {
+                    if (currentRock != null) currentRock.ToggleHighlight(false);
+                    currentRock = rock;
+                    currentRock.ToggleHighlight(true);
+                }
+                return; 
+            }
+        }
+
+        if (currentRock != null)
+        {
+            currentRock.ToggleHighlight(false);
+            currentRock = null;
         }
     }
 
-    void FixedUpdate()
+    // --- SISTEMA DE INPUT ---
+
+    void OnMove(InputValue value) => moveInput = value.Get<Vector2>();
+    void OnLook(InputValue value) => lookInput = value.Get<Vector2>();
+
+    // CORRECCIÓN AQUÍ: Antes se llamaba OnFire, ahora es OnAttack
+    // porque en tu archivo la acción se llama "Attack"
+    void OnAttack(InputValue value)
     {
-        Vector3 targetMove = transform.TransformDirection(new Vector3(moveInput.x, 0, moveInput.y).normalized);
-        rb.MovePosition(rb.position + targetMove * moveSpeed * Time.fixedDeltaTime);
+        if (value.isPressed)
+        {
+            Debug.Log("¡Botón Attack Presionado!"); // Mensaje de confirmación
+
+            if (currentRock != null)
+            {
+                currentRock.Interact();
+                currentRock = null; 
+            }
+        }
     }
 
     void LateUpdate()
@@ -54,34 +95,9 @@ public class PlayerController : MonoBehaviour
         transform.Rotate(Vector3.up * lookInput.x * mouseSensitivity);
     }
 
-    void TryInteract()
+    void FixedUpdate()
     {
-        Ray ray = new Ray(cameraTransform.position, cameraTransform.forward);
-        RaycastHit hit;
-
-        // Dibujar línea roja en la escena (solo visible en el editor) para ver a dónde apuntas
-        Debug.DrawRay(cameraTransform.position, cameraTransform.forward * interactionRange, Color.red, 2f);
-
-        if (Physics.Raycast(ray, out hit, interactionRange)) 
-        {
-            Debug.Log("He chocado con: " + hit.collider.name); // Chivato 2: ¿Qué tocamos?
-
-            // Usamos GetComponentInParent por si el script está en el objeto padre
-            RockScript rock = hit.collider.GetComponentInParent<RockScript>();
-            
-            if (rock != null)
-            {
-                Debug.Log("¡ES UNA ROCA! Rompiendo...");
-                rock.Interact();
-            }
-            else
-            {
-                Debug.Log("El objeto " + hit.collider.name + " NO tiene el script RockScript.");
-            }
-        }
-        else
-        {
-            Debug.Log("Disparo al aire (No he tocado nada)");
-        }
+        Vector3 targetMove = transform.TransformDirection(new Vector3(moveInput.x, 0, moveInput.y).normalized);
+        rb.MovePosition(rb.position + targetMove * moveSpeed * Time.fixedDeltaTime);
     }
 }

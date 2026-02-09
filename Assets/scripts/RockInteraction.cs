@@ -1,66 +1,57 @@
 using UnityEngine;
 
-public enum BiomeType { Forest, Desert }
-
 public class RockInteraction : MonoBehaviour
 {
-    public BiomeType currentBiome;
-    private bool hasLooted = false;
+    [Header("Configuración")]
+    public GameObject lootToSpawn;
+    public Color highlightColor = Color.yellow; // Color al mirarla
 
-    // Asigna estos prefabs en el Inspector del Prefab de la Roca, 
-    // o cárgalos por código si prefieres.
-    public GameObject[] forestCreatures; 
-    public GameObject[] desertCreatures;
+    // Variables internas
+    private Color originalColor;
+    private Renderer rend;
+    private GravityAttractor myPlanetAttractor; 
 
-    public void SetBiome(BiomeType biome)
+    void Start()
     {
-        currentBiome = biome;
-    }
+        rend = GetComponent<Renderer>();
+        originalColor = rend.material.color; // Guardamos el color gris/bioma inicial
 
-    // Usamos OnMouseDown para prototipo rápido (requiere Collider en la roca)
-    private void OnMouseDown()
-    {
-        Interact();
-    }
-
-    public void Interact()
-    {
-        if (hasLooted) return;
-
-        SpawnLoot();
-        hasLooted = true;
-        
-        // Feedback visual (desaparece o cambia color)
-        Destroy(gameObject); 
-    }
-
-    void SpawnLoot()
-    {
-        GameObject creatureToSpawn = null;
-
-        // Elegir criatura según bioma
-        if (currentBiome == BiomeType.Forest && forestCreatures.Length > 0)
+        // Buscar gravedad propia para pasarla al loot
+        GravityBody myGravity = GetComponent<GravityBody>();
+        if (myGravity != null)
         {
-            creatureToSpawn = forestCreatures[Random.Range(0, forestCreatures.Length)];
+            myPlanetAttractor = myGravity.attractor;
         }
-        else if (currentBiome == BiomeType.Desert && desertCreatures.Length > 0)
-        {
-            creatureToSpawn = desertCreatures[Random.Range(0, desertCreatures.Length)];
-        }
+    }
 
-        if (creatureToSpawn != null)
+    // Se llama cuando el jugador la mira
+    public void ToggleHighlight(bool active)
+    {
+        if (active)
         {
-            GameObject creature = Instantiate(creatureToSpawn, transform.position, transform.rotation);
-            
-            // Asegurar que la criatura tenga gravedad
-            GravityBody gb = creature.GetComponent<GravityBody>();
-            if (gb == null) gb = creature.AddComponent<GravityBody>();
-            
-            // Buscar el atractor más cercano (el planeta)
-            gb.attractor = FindFirstObjectByType<GravityAttractor>();        }
+            rend.material.color = highlightColor; // Se ilumina
+        }
         else
         {
-            Debug.Log("No hay criaturas asignadas para este bioma.");
+            rend.material.color = originalColor; // Vuelve a su color normal
         }
+    }
+
+    // Se llama cuando el jugador hace CLIC
+    public void Interact()
+    {
+        if (lootToSpawn != null)
+        {
+            GameObject loot = Instantiate(lootToSpawn, transform.position, transform.rotation);
+            
+            // Pasamos la gravedad a la criatura para que no salga volando
+            GravityBody lootGravity = loot.GetComponent<GravityBody>();
+            if (lootGravity != null && myPlanetAttractor != null)
+            {
+                lootGravity.attractor = myPlanetAttractor;
+            }
+        }
+        
+        Destroy(gameObject); // Adios roca
     }
 }
