@@ -9,7 +9,6 @@ public class PlayerController : MonoBehaviour
     public float mouseSensitivity = 0.2f;
 
     [Header("Salto Interplanetario")]
-    // IMPORTANTE: Sube esto a 50 o 80 en el Inspector para que sea RÁPIDO
     public float jumpForce = 60f; 
 
     [Header("Interacción")]
@@ -17,7 +16,6 @@ public class PlayerController : MonoBehaviour
     public Transform cameraTransform;
     public LayerMask interactableLayer;
 
-    // Variables internas
     private Vector2 moveInput;
     private Vector2 lookInput;
     private Rigidbody rb;
@@ -45,7 +43,6 @@ public class PlayerController : MonoBehaviour
         HandleInteractionRaycast();
     }
 
-    // --- LÓGICA DE SALTO ---
     void OnJump(InputValue value)
     {
         if (value.isPressed)
@@ -55,15 +52,11 @@ public class PlayerController : MonoBehaviour
 
             if (targetPlanet != null)
             {
-                // 1. Cambiamos la gravedad al nuevo planeta
                 gravityBody.attractor = targetPlanet;
 
-                // 2. Calculamos la dirección directa hacia el centro del otro planeta
                 Vector3 direction = (targetPlanet.transform.position - transform.position).normalized;
 
-                // 3. MODO COHETE: Sobrescribimos la velocidad directamente.
-                // Esto elimina cualquier frenada o inercia anterior.
-                // Al multiplicar por 'jumpForce', sales disparado al instante.
+ 
                 rb.velocity = direction * jumpForce;
                 
                 Debug.Log("¡Salto rápido al planeta: " + targetPlanet.name + "!");
@@ -71,7 +64,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // --- RESTO DEL CÓDIGO (Sin cambios) ---
     void HandleInteractionRaycast()
     {
         Ray ray = new Ray(cameraTransform.position, cameraTransform.forward);
@@ -123,7 +115,6 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
         Vector3 targetMove = transform.TransformDirection(new Vector3(moveInput.x, 0, moveInput.y).normalized);
-        // Usamos MovePosition para movimiento terrestre, pero el salto usa velocity
         rb.MovePosition(rb.position + targetMove * moveSpeed * Time.fixedDeltaTime);
     }
 }
