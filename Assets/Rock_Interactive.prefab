@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4893233655874024439}
   - component: {fileID: 5473615401050228055}
   - component: {fileID: 8200432314652018875}
-  - component: {fileID: 2154662695237897480}
+  - component: {fileID: 5367167295377226874}
   m_Layer: 6
   m_Name: Rock_Interactive
   m_TagString: Untagged
@@ -148,8 +148,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GravityBody
   attractor: {fileID: 0}
---- !u!64 &2154662695237897480
-MeshCollider:
+--- !u!135 &5367167295377226874
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -166,7 +166,6 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  serializedVersion: 3
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
