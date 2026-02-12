@@ -57,7 +57,7 @@ public class PlayerController : MonoBehaviour
                 Vector3 direction = (targetPlanet.transform.position - transform.position).normalized;
 
  
-                rb.velocity = direction * jumpForce;
+                rb.linearVelocity = direction * jumpForce;
                 
                 Debug.Log("¡Salto rápido al planeta: " + targetPlanet.name + "!");
             }

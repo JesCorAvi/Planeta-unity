@@ -452,16 +452,24 @@ MonoBehaviour:
   planetResolution: 256
   noiseScale: 5
   planetRadius: 50
-  colorBiome1: {r: 0, g: 1, b: 0, a: 1}
-  lootBiome1: {fileID: 5302236093363673921, guid: 32e1330cb7d7db443b2ad22402eff73d, type: 3}
-  colorBiome2: {r: 1, g: 0.6, b: 0, a: 1}
-  lootBiome2: {fileID: 7435863807195235121, guid: f6834848e19089748a976e21438eae57, type: 3}
-  rockPrefab: {fileID: 4621434630516147203, guid: 00500f4665a1c8341b385cb61efee953, type: 3}
-  rockColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-  numberOfRocks: 300
   planetLayer:
     serializedVersion: 2
     m_Bits: 4294967295
+  colorBiome1: {r: 0, g: 1, b: 0, a: 1}
+  lootBiome1: {fileID: 5302236093363673921, guid: 32e1330cb7d7db443b2ad22402eff73d, type: 3}
+  treesBiome1:
+  - {fileID: 191266, guid: c44bd9bdc114d4a60932c0087d9d1732, type: 3}
+  colorBiome2: {r: 1, g: 0.6, b: 0, a: 1}
+  lootBiome2: {fileID: 7435863807195235121, guid: f6834848e19089748a976e21438eae57, type: 3}
+  treesBiome2:
+  - {fileID: 188006, guid: c6b7fb383a3534b039692b5485b6e739, type: 3}
+  rockPrefabs:
+  - {fileID: 8933749797280981253, guid: 46e654c102087004988f6462e5ae7133, type: 3}
+  - {fileID: 6173341499977504312, guid: 9cf4cca6be6d72b4191cec509848f6ac, type: 3}
+  - {fileID: 2290846898853941114, guid: b0abe2cf3d0874541a042aeb54738371, type: 3}
+  - {fileID: 7809331290410404023, guid: 0dd050efb10a21c4f8d1c3ab7e33f70b, type: 3}
+  numberOfRocks: 300
+  numberOfTrees: 100
 --- !u!64 &388641198
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -669,16 +677,24 @@ MonoBehaviour:
   planetResolution: 256
   noiseScale: 5
   planetRadius: 50
-  colorBiome1: {r: 1, g: 0.08296197, b: 0, a: 1}
-  lootBiome1: {fileID: 7435863807195235121, guid: b0d05a68dfe0304439c9b6e073417906, type: 3}
-  colorBiome2: {r: 0.03554964, g: 0, b: 1, a: 1}
-  lootBiome2: {fileID: 7435863807195235121, guid: 5928acdb6835ebd45b9fabf0639d903e, type: 3}
-  rockPrefab: {fileID: 4621434630516147203, guid: 00500f4665a1c8341b385cb61efee953, type: 3}
-  rockColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-  numberOfRocks: 300
   planetLayer:
     serializedVersion: 2
     m_Bits: 4294967295
+  colorBiome1: {r: 1, g: 0.08296197, b: 0, a: 1}
+  lootBiome1: {fileID: 7435863807195235121, guid: b0d05a68dfe0304439c9b6e073417906, type: 3}
+  treesBiome1:
+  - {fileID: 137650, guid: 826b6a0b570e8460990010fa615b5a2a, type: 3}
+  colorBiome2: {r: 0.03554964, g: 0, b: 1, a: 1}
+  lootBiome2: {fileID: 7435863807195235121, guid: 5928acdb6835ebd45b9fabf0639d903e, type: 3}
+  treesBiome2:
+  - {fileID: 192044, guid: 19682540d8a014522a319b1cf788aee2, type: 3}
+  rockPrefabs:
+  - {fileID: 8933749797280981253, guid: 46e654c102087004988f6462e5ae7133, type: 3}
+  - {fileID: 6173341499977504312, guid: 9cf4cca6be6d72b4191cec509848f6ac, type: 3}
+  - {fileID: 2290846898853941114, guid: b0abe2cf3d0874541a042aeb54738371, type: 3}
+  - {fileID: 2684695994064820914, guid: 86509780b07285a44a69b1eb089a3ed1, type: 3}
+  numberOfRocks: 300
+  numberOfTrees: 100
 --- !u!114 &632100747
 MonoBehaviour:
   m_ObjectHideFlags: 0
