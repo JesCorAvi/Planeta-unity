@@ -5,6 +5,7 @@ public class RockInteraction : MonoBehaviour
     [Header("Configuración")]
     public GameObject lootToSpawn;
     public Color highlightColor = Color.yellow; 
+    public float spawnHeightOffset = 1.0f; 
 
     private Color originalColor;
     private Renderer rend;
@@ -20,25 +21,25 @@ public class RockInteraction : MonoBehaviour
         {
             myPlanetAttractor = myGravity.attractor;
         }
+        else
+        {
+            var attractors = FindObjectsByType<GravityAttractor>(FindObjectsSortMode.None);
+            if (attractors.Length > 0) myPlanetAttractor = attractors[0];
+        }
     }
 
     public void ToggleHighlight(bool active)
     {
-        if (active)
-        {
-            rend.material.color = highlightColor; 
-        }
-        else
-        {
-            rend.material.color = originalColor; 
-        }
+        if (rend != null) rend.material.color = active ? highlightColor : originalColor; 
     }
 
     public void Interact()
     {
         if (lootToSpawn != null)
         {
-            GameObject loot = Instantiate(lootToSpawn, transform.position, transform.rotation);
+            Vector3 spawnPos = transform.position + (transform.up * spawnHeightOffset);
+
+            GameObject loot = Instantiate(lootToSpawn, spawnPos, transform.rotation);
             
             GravityBody lootGravity = loot.GetComponent<GravityBody>();
             if (lootGravity != null && myPlanetAttractor != null)

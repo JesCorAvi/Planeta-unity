@@ -35,7 +35,8 @@ public class PlayerController : MonoBehaviour
 
         if (cameraTransform == null) cameraTransform = Camera.main.transform;
 
-        allPlanets = FindObjectsOfType<GravityAttractor>();
+        // CORRECCIÓN: Usamos la nueva API optimizada de Unity
+        allPlanets = FindObjectsByType<GravityAttractor>(FindObjectsSortMode.None);
     }
 
     void Update()
@@ -56,7 +57,8 @@ public class PlayerController : MonoBehaviour
 
                 Vector3 direction = (targetPlanet.transform.position - transform.position).normalized;
 
- 
+                // Nota: linearVelocity es correcto si usas Unity 6. 
+                // Si usas una versión anterior y da error, cámbialo por rb.velocity
                 rb.linearVelocity = direction * jumpForce;
                 
                 Debug.Log("¡Salto rápido al planeta: " + targetPlanet.name + "!");

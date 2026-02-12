@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4845737267586069217}
   - component: {fileID: 1128705325143213051}
   - component: {fileID: 7413666030316783166}
+  - component: {fileID: 1354697073809139449}
   m_Layer: 0
   m_Name: Loot_Water
   m_TagString: Untagged
@@ -154,3 +155,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GravityBody
   attractor: {fileID: 0}
+--- !u!114 &1354697073809139449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7435863807195235121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd364843b8eabfc4cbc39b5a8814c819, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CollectibleItem
+  itemData: {fileID: 11400000, guid: bf7addeb0a8ca414bae246efedf97898, type: 2}
+  quantity: 1

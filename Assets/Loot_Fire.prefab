@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4845737267586069217}
   - component: {fileID: 1128705325143213051}
   - component: {fileID: 7413666030316783166}
+  - component: {fileID: 5699809806500070226}
   m_Layer: 0
   m_Name: Loot_Fire
   m_TagString: Untagged
@@ -154,3 +155,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GravityBody
   attractor: {fileID: 0}
+--- !u!114 &5699809806500070226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7435863807195235121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd364843b8eabfc4cbc39b5a8814c819, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CollectibleItem
+  itemData: {fileID: 11400000, guid: 7ba3e13f57cec9a4d81b8e65c1fb25b5, type: 2}
+  quantity: 1
