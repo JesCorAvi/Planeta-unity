@@ -3,9 +3,9 @@ using UnityEngine;
 public class GravitySwitch : MonoBehaviour
 {
     [Header("Configuración")]
-    public GravityAttractor targetPlanet; 
-    public float launchForce = 15f;       
-    public Color highlightColor = Color.cyan;
+    [SerializeField] private GravityAttractor targetPlanet;
+    [SerializeField] private float launchForce = 15f;
+    [SerializeField] private Color highlightColor = Color.cyan;
 
     private Color originalColor;
     private Renderer rend;
@@ -29,13 +29,13 @@ public class GravitySwitch : MonoBehaviour
 
         if (playerGravity != null && targetPlanet != null)
         {
-            playerGravity.attractor = targetPlanet;
+            playerGravity.Attractor = targetPlanet;
 
             if (playerRb != null)
             {
                 playerRb.AddForce(player.transform.up * launchForce, ForceMode.Impulse);
             }
-            
+
             Debug.Log("¡Viajando al planeta: " + targetPlanet.name + "!");
         }
     }

@@ -4,29 +4,29 @@ using System.Collections.Generic;
 public class PlanetBiomeManager : MonoBehaviour
 {
     [Header("Configuración General")]
-    public int planetResolution = 256;
-    public float noiseScale = 3f;
-    public float planetRadius = 10f;
-    public LayerMask planetLayer;
+    [SerializeField] private int planetResolution = 256;
+    [SerializeField] private float noiseScale = 3f;
+    [SerializeField] private float planetRadius = 10f;
+    [SerializeField] private LayerMask planetLayer;
     [Range(0f, 0.2f)]
-    public float biomeEdgeThreshold = 0.05f; 
+    [SerializeField] private float biomeEdgeThreshold = 0.05f;
 
     [Header("Bioma 1 (Bosque/Verde)")]
-    public Color colorBiome1 = Color.green;
-    public GameObject lootBiome1;
-    public GameObject[] treesBiome1;
+    [SerializeField] private Color colorBiome1 = Color.green;
+    [SerializeField] private GameObject lootBiome1;
+    [SerializeField] private GameObject[] treesBiome1;
 
     [Header("Bioma 2 (Desierto/Rojo)")]
-    public Color colorBiome2 = new Color(1f, 0.6f, 0f);
-    public GameObject lootBiome2;
-    public GameObject[] treesBiome2;
+    [SerializeField] private Color colorBiome2 = new Color(1f, 0.6f, 0f);
+    [SerializeField] private GameObject lootBiome2;
+    [SerializeField] private GameObject[] treesBiome2;
 
     [Header("Rocas Interactivas")]
-    public GameObject[] rockPrefabs;
-    public int numberOfRocks = 50;
+    [SerializeField] private GameObject[] rockPrefabs;
+    [SerializeField] private int numberOfRocks = 50;
 
     [Header("Vegetación (Árboles)")]
-    public int numberOfTrees = 30;
+    [SerializeField] private int numberOfTrees = 30;
 
     private Texture2D biomeMap;
     private GravityAttractor myGravity;
@@ -34,7 +34,7 @@ public class PlanetBiomeManager : MonoBehaviour
     void Start()
     {
         myGravity = GetComponent<GravityAttractor>();
-        
+
         if (GetComponent<MeshCollider>() == null)
         {
             gameObject.AddComponent<MeshCollider>();
@@ -91,13 +91,13 @@ public class PlanetBiomeManager : MonoBehaviour
 
                 if (spawnData.isBiome1)
                 {
-                    rockScript.lootToSpawn = lootBiome1;
+                    rockScript.LootToSpawn = lootBiome1;
                 }
                 else
                 {
-                    rockScript.lootToSpawn = lootBiome2;
+                    rockScript.LootToSpawn = lootBiome2;
                 }
-                
+
                 newRock.transform.parent = transform;
             }
         }
@@ -127,13 +127,13 @@ public class PlanetBiomeManager : MonoBehaviour
                 if (treeToSpawn != null)
                 {
                     GameObject newTree = Instantiate(treeToSpawn, spawnData.position, Quaternion.identity);
-                    
+
                     AlignToPlanet(newTree);
                     AttachGravity(newTree);
 
                     float randomScale = Random.Range(0.8f, 1.2f);
                     newTree.transform.localScale *= randomScale;
-                    
+
                     newTree.transform.parent = transform;
                 }
             }
@@ -166,7 +166,7 @@ public class PlanetBiomeManager : MonoBehaviour
                 if (hit.collider.gameObject == gameObject)
                 {
                     Vector2 uv = hit.textureCoord;
-                    
+
                     float noiseVal = Mathf.PerlinNoise(uv.x * noiseScale, uv.y * noiseScale);
 
                     if (Mathf.Abs(noiseVal - 0.5f) < biomeEdgeThreshold)
@@ -177,7 +177,7 @@ public class PlanetBiomeManager : MonoBehaviour
                     data.hitFound = true;
                     data.position = hit.point;
                     data.isBiome1 = noiseVal < 0.5f;
-                    
+
                     return data;
                 }
             }
@@ -196,6 +196,6 @@ public class PlanetBiomeManager : MonoBehaviour
     {
         GravityBody gb = obj.GetComponent<GravityBody>();
         if (gb == null) gb = obj.AddComponent<GravityBody>();
-        gb.attractor = myGravity;
+        gb.Attractor = myGravity;
     }
 }

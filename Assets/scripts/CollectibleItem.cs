@@ -3,8 +3,8 @@ using UnityEngine;
 public class CollectibleItem : MonoBehaviour
 {
     [Header("Configuración")]
-    public ItemData itemData; 
-    public int quantity = 1;
+    [SerializeField] private ItemData itemData;
+    [SerializeField] private int quantity = 1;
 
     void OnCollisionEnter(Collision collision)
     {
@@ -22,7 +22,7 @@ public class CollectibleItem : MonoBehaviour
         {
             InventoryManager.Instance.AddItem(itemData, quantity);
         }
-        
+
         Destroy(gameObject);
     }
 }

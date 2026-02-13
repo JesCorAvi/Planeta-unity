@@ -1,20 +1,20 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using System.Linq; 
+using System.Linq;
 
 public class PlayerController : MonoBehaviour
 {
     [Header("Movimiento")]
-    public float moveSpeed = 8f;
-    public float mouseSensitivity = 0.2f;
+    [SerializeField] private float moveSpeed = 8f;
+    [SerializeField] private float mouseSensitivity = 0.2f;
 
     [Header("Salto Interplanetario")]
-    public float jumpForce = 60f; 
+    [SerializeField] private float jumpForce = 60f;
 
     [Header("Interacción")]
-    public float interactionRange = 5f;
-    public Transform cameraTransform;
-    public LayerMask interactableLayer;
+    [SerializeField] private float interactionRange = 5f;
+    [SerializeField] private Transform cameraTransform;
+    [SerializeField] private LayerMask interactableLayer;
 
     private Vector2 moveInput;
     private Vector2 lookInput;
@@ -35,7 +35,6 @@ public class PlayerController : MonoBehaviour
 
         if (cameraTransform == null) cameraTransform = Camera.main.transform;
 
-        // CORRECCIÓN: Usamos la nueva API optimizada de Unity
         allPlanets = FindObjectsByType<GravityAttractor>(FindObjectsSortMode.None);
     }
 
@@ -48,19 +47,17 @@ public class PlayerController : MonoBehaviour
     {
         if (value.isPressed)
         {
-            GravityAttractor currentPlanet = gravityBody.attractor;
+            GravityAttractor currentPlanet = gravityBody.Attractor;
             GravityAttractor targetPlanet = allPlanets.FirstOrDefault(p => p != currentPlanet);
 
             if (targetPlanet != null)
             {
-                gravityBody.attractor = targetPlanet;
+                gravityBody.Attractor = targetPlanet;
 
                 Vector3 direction = (targetPlanet.transform.position - transform.position).normalized;
 
-                // Nota: linearVelocity es correcto si usas Unity 6. 
-                // Si usas una versión anterior y da error, cámbialo por rb.velocity
                 rb.linearVelocity = direction * jumpForce;
-                
+
                 Debug.Log("¡Salto rápido al planeta: " + targetPlanet.name + "!");
             }
         }

@@ -8,9 +8,8 @@ public class InventoryManager : MonoBehaviour
     public static InventoryManager Instance;
 
     [Header("UI")]
-    public TextMeshProUGUI inventoryText;
+    [SerializeField] private TextMeshProUGUI inventoryText;
 
-    // Diccionario para guardar los Items y sus cantidades
     private Dictionary<ItemData, int> inventory = new Dictionary<ItemData, int>();
 
     void Awake()
@@ -27,7 +26,6 @@ public class InventoryManager : MonoBehaviour
 
     void InitializeInventory()
     {
-        // Carga todos los minerales creados en la carpeta Resources/Items
         ItemData[] allItems = Resources.LoadAll<ItemData>("Items");
 
         foreach (var item in allItems)
@@ -52,21 +50,20 @@ public class InventoryManager : MonoBehaviour
         UpdateUI();
     }
 
-void UpdateUI()
+    void UpdateUI()
     {
         if (inventoryText == null) return;
 
         string displayText = "<align=center><size=130%><b>MINERALES</b></size></align>\n\n";
 
-        foreach (var entry in inventory.OrderBy(x => x.Key.itemName)) 
+        foreach (var entry in inventory.OrderBy(x => x.Key.ItemName))
         {
             ItemData item = entry.Key;
             int count = entry.Value;
 
-            string hexColor = "#" + ColorUtility.ToHtmlStringRGB(item.displayColor);
+            string hexColor = "#" + ColorUtility.ToHtmlStringRGB(item.DisplayColor);
 
-
-            displayText += $"<color={hexColor}>{item.itemName}</color> <pos=70%>{count}\n";
+            displayText += $"<color={hexColor}>{item.ItemName}</color> <pos=70%>{count}\n";
         }
 
         inventoryText.text = displayText;

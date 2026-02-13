@@ -3,23 +3,29 @@ using UnityEngine;
 public class RockInteraction : MonoBehaviour
 {
     [Header("Configuración")]
-    public GameObject lootToSpawn;
-    public Color highlightColor = Color.yellow; 
-    public float spawnHeightOffset = 1.0f; 
+    [SerializeField] private GameObject lootToSpawn;
+    [SerializeField] private Color highlightColor = Color.yellow;
+    [SerializeField] private float spawnHeightOffset = 1.0f;
+
+    public GameObject LootToSpawn
+    {
+        get => lootToSpawn;
+        set => lootToSpawn = value;
+    }
 
     private Color originalColor;
     private Renderer rend;
-    private GravityAttractor myPlanetAttractor; 
+    private GravityAttractor myPlanetAttractor;
 
     void Start()
     {
         rend = GetComponent<Renderer>();
-        originalColor = rend.material.color; 
+        originalColor = rend.material.color;
 
         GravityBody myGravity = GetComponent<GravityBody>();
         if (myGravity != null)
         {
-            myPlanetAttractor = myGravity.attractor;
+            myPlanetAttractor = myGravity.Attractor;
         }
         else
         {
@@ -30,7 +36,7 @@ public class RockInteraction : MonoBehaviour
 
     public void ToggleHighlight(bool active)
     {
-        if (rend != null) rend.material.color = active ? highlightColor : originalColor; 
+        if (rend != null) rend.material.color = active ? highlightColor : originalColor;
     }
 
     public void Interact()
@@ -40,14 +46,14 @@ public class RockInteraction : MonoBehaviour
             Vector3 spawnPos = transform.position + (transform.up * spawnHeightOffset);
 
             GameObject loot = Instantiate(lootToSpawn, spawnPos, transform.rotation);
-            
+
             GravityBody lootGravity = loot.GetComponent<GravityBody>();
             if (lootGravity != null && myPlanetAttractor != null)
             {
-                lootGravity.attractor = myPlanetAttractor;
+                lootGravity.Attractor = myPlanetAttractor;
             }
         }
-        
-        Destroy(gameObject); 
+
+        Destroy(gameObject);
     }
 }

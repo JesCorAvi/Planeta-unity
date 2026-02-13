@@ -3,13 +3,20 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class GravityBody : MonoBehaviour
 {
-    public GravityAttractor attractor; 
+    [SerializeField] private GravityAttractor attractor;
+
+    public GravityAttractor Attractor
+    {
+        get => attractor;
+        set => attractor = value;
+    }
+
     private Rigidbody rb;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        rb.useGravity = false; 
+        rb.useGravity = false;
         rb.constraints = RigidbodyConstraints.FreezeRotation;
     }
 
